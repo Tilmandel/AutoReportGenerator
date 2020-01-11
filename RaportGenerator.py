@@ -25,6 +25,7 @@ headers_list = ['MSC File ID',
 
 
 class DataGenerator(object):
+    """This will Generate list with all files that will be readed"""
     def __init__(self, source):
         self.file_tree = os.walk(source)
 
@@ -36,6 +37,7 @@ class DataGenerator(object):
 
 
 class ChunkData(object):
+    """This is just a limitter to how much files will be processed"""
     def __init__(self):
         self.temp_list_data = []
         self.count_donw = 0
@@ -69,6 +71,10 @@ def _write_rest_body(row, items):
 
 
 def _parser(path, name, dump):
+    """This _parser takes path, name, dump
+    path is path from where file is exctracted
+    name is splited full file name to extract name that will be used later on
+    dump is just path where this scrip should dump all txt files that will be used for writing excel"""
     try:
         file = go(path + '\\' + name)
         read = file.read()
@@ -207,6 +213,8 @@ if __name__ == '__main__':
     jobs = []
     jobs_len = []
     while file_list != []:
+        """This section will iterate over while loop until fiels_list is empty, file_list is list with 
+        files that need to be proccesed, also its limits how much proccess will be started"""
         print(total - len(file_list))
         if len(jobs) < 4:
             temp = ChunkData()
@@ -221,6 +229,8 @@ if __name__ == '__main__':
             time.sleep(3)
             jobs = []
     if total == len(jobs_len):
+        """After while loop ends up this will wait for all remmaning proccess to end and the will read all txt files 
+        and write data from there to final excel"""
         time.sleep(29)
         for item in [files for root, dirs, files in os.walk(txtdump)][0]:
             with open(txtdump + "\\" + item) as fh:
